@@ -1,11 +1,12 @@
 defmodule Issues.CLI do
+  import Issues.TableFormatter, only: [print_table_for_columns: 2]
   @default_count 4
   @moduledoc """
   Handles the command line parsing
   """
 
 
-  def run(argv) do
+  def main(argv) do
     argv
     |> parse_args
     |> process
@@ -44,11 +45,12 @@ defmodule Issues.CLI do
     System.halt(0)
   end
 
-  def process({user, project, _count}) do
+  def process({user, project, count}) do
     Issues.GithubIssues.fetch(user, project)
     |> decode_response()
     |> sort_descending()
     |> get_last(count)
+    |> print_table_for_columns(["number", "created_at", "title"])
   end
 
 
