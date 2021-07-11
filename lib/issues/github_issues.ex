@@ -16,11 +16,6 @@ defmodule Issues.GithubIssues do
   end
 
 
-  def handle_response({:ok, %{status_code: 200, body: body}}) do
-    %{status_code: 200,
-      body: Poison.Parser.parse!(body)}
-  end
-
   def handle_response({_, %{status_code: status_code, body: body}}) do
     %{status_code: status_code,
       body: Poison.Parser.parse!(body)}
